@@ -24,3 +24,10 @@ knitr::include_graphics("lfs sampling diagram.png")
 - Mapping
 - Discussion
 
+# New Section
+
+I am adding a new section to a forked version of J test.
+
+I hope this works.
+
+# Bibliography
