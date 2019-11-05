@@ -1,0 +1,63 @@
+---
+title: "Length_Weight_practice"
+author: "Jillian Burns"
+date: "11/4/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(reshape2)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+require(scales)
+```
+
+
+# Introduction
+
+In order to calculate gut fullness for my fish, I need to calcuate fish weights from a length-weight relationship because the scale I used was not appropriately precise. SS from CDFW provided me length-weight data for larval longfin smelt collected from the IEP Smelt Larval Survey to get this relationship. Find more information about the [Smelt Larval Survey here](https://www.dfg.ca.gov/delta/projects.asp?ProjectID=SLS). 
+
+```{r echo=FALSE}
+# read in dataset
+a <- read.csv("CDFW LONSME L-W_5Aug2019.csv", stringsAsFactors = F)
+head(a)
+
+# format date in order to filter
+a$SurveyDate <- as.Date(a$SurveyDate, "%d-%b-%y")
+a$Month <- format(as.Date(a$SurveyDate), "%b")
+
+# filter for only relevant fish lengths and dates for my dataset
+b <- a %>% #n=304 (b dataframe)
+  filter(ForkLength %in% (4:28) & Month %in% c("Jan", "Feb", "Mar", "Apr"))
+b$Month <- factor(b$Month, levels = c("Jan", "Feb", "Mar", "Apr"))
+```
+
+
+# Analysis
+
+First, I want to see the raw data.  
+```{r}
+hist(b$ForkLength)
+
+```
+```{r}
+plot(b$ForkLength, b$TotalBodyWeight)
+```
+
+
+# Results
+
+```{r}
+#Start plotting - change data here depending on what length range you want
+(p <- ggplot(b, aes(x = Month, y = ForkLength)))
+#Plot raw values
+(pp <- p + geom_boxplot()) +
+  theme_bw()
+```
+
