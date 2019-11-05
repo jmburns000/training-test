@@ -1,2 +1,6 @@
-# training-test
-The test repository for the NCEAS training
+# Our Training Examples
+TTheese are the demo files from the NCEAS tutorial. 
+
+- apples
+- oranges
+- other files
