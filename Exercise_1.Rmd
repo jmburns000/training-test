@@ -18,6 +18,10 @@ The goal of this exercise is to add a new RMarkdown file to my new repository.
 # Analysis
 
 ```{r}
+- Data Cleaning
+- [Exercise_1](Exercise_1.html)
+- Mapping
+- Discussion
 
 ```
 
