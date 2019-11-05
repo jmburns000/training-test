@@ -1,5 +1,5 @@
 # Our Training Examples
-TTheese are the demo files from the NCEAS tutorial. 
+These are the demo files from the NCEAS tutorial. 
 
 - apples
 - oranges
