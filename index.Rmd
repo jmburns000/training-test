@@ -13,7 +13,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 - Sampled habitats
 
-<img src="lfs sampling diagram.png" title = "sampling diagram"/>
+<!-- <img src="lfs sampling diagram.png" title = "sampling diagram"/> -->
+
+```{r graphics, fig.align='center', echo=FALSE, out.width='50%'}
+knitr::include_graphics("lfs sampling diagram.png")
+```
 
 - Data Cleaning
 - Analysis: [Exercise_1](Exercise_1.html)
