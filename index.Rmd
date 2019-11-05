@@ -11,7 +11,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Outline of manuscript work
 
+- Sampled habitats
+
+<img src="lfs sampling diagram.png" title = "sampling diagram"/>
+
 - Data Cleaning
 - Analysis: [Exercise_1](Exercise_1.html)
 - Mapping
 - Discussion
+
