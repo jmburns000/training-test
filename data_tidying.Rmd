@@ -18,6 +18,8 @@ library(tidyr)
 
 # Red and Clean Data 
 
+Note: `tolower` function to turn everything to lowercase
+
 ```{r}
 catch_original <- read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1", method = "libcurl"),
                     stringsAsFactors = FALSE)
@@ -45,7 +47,7 @@ Use `mutate` to fix Chinook column
 
 ```{r}
 catch_clean <- catch_data %>% 
-  mutate(Chinook = if.else(Chinook == "I", 1, Chinook)) %>% 
+  mutate(Chinook = ifelse(Chinook == "I", 1, Chinook)) %>% 
   mutate(Chinook = as.numeric(Chinook))
 
 
@@ -74,8 +76,91 @@ catch_long <- catch_clean %>%
 head(catch_long)
 ```
 
+```{r}
+catch_wide <- catch_long %>% 
+  pivot_wider(names_from = Year,
+              values_from = count)
+
+head(catch_wide)
+```
+
+`rename` count column to `catch_thousands`
+
+```{r}
+catch_long <- catch_long %>% 
+  rename(catch_thousands = count) 
+
+head(catch_long)
+```
+
+
+```{r}
+catch_long <- catch_long %>% 
+  mutate (catch = catch_thousands * 1000) %>% 
+  select(-catch_thousands)
+
+head(catch_long)
+```
 
 # Summarize Data
 
-# Join to Reion Table
+```{r}
+mean_region <- catch_long%>% 
+  group_by(Region, species) %>% 
+  summarise(catch_mean = mean(catch),
+            num_obs = n())
+
+mean_region
+```
+
+```{r}
+total_catch <- catch_long %>% 
+  filter(Year < 1900) %>% 
+  group_by(species) %>% 
+  summarise(catch_sum = sum(catch)) %>% 
+  arrange(desc(catch_sum))
+
+total_catch
+```
+
+
+# Join to Region Table
+
+Read in Region data table
+
+```{r}
+region_defs <- read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.303.1", 
+                             method = "libcurl"),
+                         stringsAsFactors = F) %>% 
+  select(code, mgmtArea)
+
+
+head(region_defs)
+```
+
+```{r}
+catch_joined <- left_join(catch_long, region_defs, by = c("Region" = "code"))
+```
+
+# Separate and unite
+site_codes <- data.frame(site = c("HAW-100",))
+
+```{r}
+site_codes <- data.frame(site = c("HAW-100",
+                                  "HAW-101",
+                                  "OAH-102",
+                                  "OAH-103",
+                                  "MAI-100"),
+                         stringsAsFactors = F)
+```
+
+separate island and site number using `separate`
+
+```{r}
+site_codes_split <- site_codes %>% 
+  separate(site, into = c("island", "site_num"), sep = "-", remove = F) %>% 
+  unite(col = site_code, island, site_num, sep = "_", remove = F)
+
+site_codes_split
+```
 
